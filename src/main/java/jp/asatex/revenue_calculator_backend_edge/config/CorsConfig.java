@@ -16,16 +16,11 @@ public class CorsConfig {
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         
-        // 允许的来源
-        corsConfig.setAllowedOrigins(Arrays.asList(
-            "https://revenue.asatex.jp",
-            "https://test.revenue.asatex.jp"
-        ));
+        // 允许的来源 - 使用通配符避免格式错误
+        corsConfig.addAllowedOriginPattern("*");
         
-        // 允许的 HTTP 方法
-        corsConfig.setAllowedMethods(Arrays.asList(
-            "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
-        ));
+        // 允许的 HTTP 方法 - 使用通配符
+        corsConfig.addAllowedMethod("*");
         
         // 允许的请求头
         corsConfig.setAllowedHeaders(Collections.singletonList("*"));
