@@ -1,20 +1,27 @@
 package jp.asatex.revenue_calculator_backend_edge.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.lang.NonNull;
-import org.springframework.web.reactive.config.CorsRegistry;
-import org.springframework.web.reactive.config.EnableWebFlux;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+
+import java.util.Collections;
 
 @Configuration
-public class CorsConfig implements WebFluxConfigurer {
+public class CorsConfig {
 
-    @Override
-    public void addCorsMappings(@NonNull CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*") // Allow all origins
-                .allowedMethods("*") // Allow all methods
-                .allowedHeaders("*") // Allow all headers
-                .maxAge(3600);
+    @Bean
+    public CorsWebFilter corsWebFilter() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedOrigins(Collections.singletonList("*"));
+        corsConfig.setMaxAge(3600L);
+        corsConfig.addAllowedMethod("*");
+        corsConfig.addAllowedHeader("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+
+        return new CorsWebFilter(source);
     }
 }
